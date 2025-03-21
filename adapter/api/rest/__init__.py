@@ -1,51 +1,52 @@
-"""REST API适配器"""
+"""REST API Adapter."""
 import logging
+
 from flask import Flask
 from flask.logging import default_handler
 
-from config.settings import get_config
-from api.routes import api_blueprint
 from api.middleware import error_handler, request_logger
+from api.routes import api_blueprint
 from application.di.container import container
+from config.settings import get_config
 
-# 获取配置
+# Get configuration
 config = get_config()
 
-# 设置日志
+# Setup logging
 logging.basicConfig(
     level=getattr(logging, config.LOG_LEVEL),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
 logger = logging.getLogger(__name__)
 
 
 def create_app() -> Flask:
-    """创建Flask应用
-    
+    """Create Flask application.
+
     Returns:
-        配置好的Flask应用实例
+        Configured Flask application instance
     """
-    # 创建应用
+    # Create application
     app = Flask(__name__)
-    
-    # 配置应用
+
+    # Configure application
     app.config.from_object(config)
-    
-    # 注册中间件
+
+    # Register middleware
     error_handler(app)
     request_logger(app)
-    
-    # 注册蓝图
-    app.register_blueprint(api_blueprint, url_prefix='/api')
-    
-    # 初始化数据库
+
+    # Register blueprints
+    app.register_blueprint(api_blueprint, url_prefix="/api")
+
+    # Initialize database
     with app.app_context():
         container.db_init()
-    
-    # 路由信息日志
-    logger.info("已注册的路由:")
+
+    # Log route information
+    logger.info("Registered routes:")
     for rule in app.url_map.iter_rules():
         logger.info(f"{rule.endpoint}: {rule.rule} {rule.methods}")
-    
+
     return app

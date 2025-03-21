@@ -1,72 +1,73 @@
-"""示例仓库接口"""
+"""Example Repository Interfaces."""
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Any
-from domain.model.example import User, Task
+from typing import List, Optional
+
+from domain.model.example import Task, User
 
 
 class UserRepository(ABC):
-    """用户仓库接口"""
-    
+    """User Repository Interface."""
+
     @abstractmethod
     def get_by_id(self, user_id: str) -> Optional[User]:
-        """根据ID获取用户"""
+        """Get user by ID."""
         pass
-    
+
     @abstractmethod
     def get_by_username(self, username: str) -> Optional[User]:
-        """根据用户名获取用户"""
+        """Get user by username."""
         pass
-    
+
     @abstractmethod
     def get_by_email(self, email: str) -> Optional[User]:
-        """根据邮箱获取用户"""
+        """Get user by email."""
         pass
-    
+
     @abstractmethod
     def list_all(self, limit: int = 100, offset: int = 0) -> List[User]:
-        """获取所有用户"""
+        """Get all users."""
         pass
-    
+
     @abstractmethod
     def save(self, user: User) -> User:
-        """保存用户"""
+        """Save user."""
         pass
-    
+
     @abstractmethod
     def delete(self, user_id: str) -> bool:
-        """删除用户"""
+        """Delete user."""
         pass
 
 
 class TaskRepository(ABC):
-    """任务仓库接口"""
-    
+    """Task Repository Interface."""
+
     @abstractmethod
     def get_by_id(self, task_id: str) -> Optional[Task]:
-        """根据ID获取任务"""
+        """Get task by ID."""
         pass
-    
+
     @abstractmethod
     def list_all(self, limit: int = 100, offset: int = 0) -> List[Task]:
-        """获取所有任务"""
+        """Get all tasks."""
         pass
-    
+
     @abstractmethod
     def list_by_user(self, user_id: str, limit: int = 100, offset: int = 0) -> List[Task]:
-        """获取用户的所有任务"""
+        """Get all tasks for a user."""
         pass
-    
+
     @abstractmethod
     def save(self, task: Task) -> Task:
-        """保存任务"""
+        """Save task."""
         pass
-    
+
     @abstractmethod
     def delete(self, task_id: str) -> bool:
-        """删除任务"""
+        """Delete task."""
         pass
-    
+
     @abstractmethod
     def count_by_user(self, user_id: str, is_completed: Optional[bool] = None) -> int:
-        """统计用户任务数量"""
-        pass 
+        """Count user tasks."""
+        pass

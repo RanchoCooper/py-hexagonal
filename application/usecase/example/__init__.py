@@ -1,14 +1,15 @@
-"""示例用例模块"""
+"""Example Use Case Module."""
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-# 用例输入/输出数据结构
+# Use case input/output data structures
 
 
 @dataclass
 class CreateUserInput:
-    """创建用户输入"""
+    """Create User Input."""
+
     username: str
     email: str
     password: str
@@ -17,7 +18,8 @@ class CreateUserInput:
 
 @dataclass
 class UserOutput:
-    """用户输出"""
+    """User Output."""
+
     id: str
     username: str
     email: str
@@ -28,7 +30,8 @@ class UserOutput:
 
 @dataclass
 class UpdateUserInput:
-    """更新用户输入"""
+    """Update User Input."""
+
     user_id: str
     username: Optional[str] = None
     email: Optional[str] = None
@@ -38,7 +41,8 @@ class UpdateUserInput:
 
 @dataclass
 class CreateTaskInput:
-    """创建任务输入"""
+    """Create Task Input."""
+
     title: str
     description: Optional[str] = None
     due_date: Optional[datetime] = None
@@ -47,7 +51,8 @@ class CreateTaskInput:
 
 @dataclass
 class TaskOutput:
-    """任务输出"""
+    """Task Output."""
+
     id: str
     title: str
     description: Optional[str]
@@ -59,7 +64,8 @@ class TaskOutput:
 
 @dataclass
 class UpdateTaskInput:
-    """更新任务输入"""
+    """Update Task Input."""
+
     task_id: str
     title: Optional[str] = None
     description: Optional[str] = None

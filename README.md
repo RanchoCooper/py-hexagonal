@@ -1,41 +1,103 @@
 # py-hexagonal
 
-基于六边形架构（Hexagonal Architecture）的Python框架。
+Python framework based on Hexagonal Architecture.
 
-## 架构特点
+## Architecture Features
 
-- **六边形架构**：将应用核心与外部系统隔离
-- **依赖注入**：使用dependency-injector实现解耦
-- **事件驱动**：基于PyDispatcher的事件总线
-- **工厂模式**：创建对象的工厂类
-- **接口与抽象**：使用ABC模块定义接口
-- **中间件支持**：提供Flask中间件机制
-- **统一错误处理**：全局异常处理
-- **配置管理**：基于python-dotenv的配置
+- **Hexagonal Architecture**: Isolates the application core from external systems
+- **Dependency Injection**: Uses dependency-injector for decoupling
+- **Event-Driven**: Event bus based on PyDispatcher
+- **Factory Pattern**: Factory classes for object creation
+- **Interfaces and Abstractions**: Uses ABC module to define interfaces
+- **Middleware Support**: Provides Flask middleware mechanism
+- **Unified Error Handling**: Global exception handling
+- **Configuration Management**: Configuration based on python-dotenv
 
-## 目录结构
+## Directory Structure
 
-- **adapter**：适配器层，连接外部世界与应用核心
-- **api**：API定义和处理
-- **application**：应用层，用例实现
-- **domain**：领域层，核心业务逻辑
-- **config**：配置
-- **util**：工具类
+- **adapter**: Adapter layer, connects the outside world to the application core
+- **api**: API definitions and handlers
+- **application**: Application layer, use case implementations
+- **domain**: Domain layer, core business logic
+- **config**: Configuration
+- **util**: Utility classes
 
-## 安装
+## Installation
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 运行
+Or using Makefile:
+
+```bash
+make install
+```
+
+## Running
 
 ```bash
 python main.py
 ```
 
-## 测试
+Or using Makefile:
+
+```bash
+make run
+```
+
+## Testing
 
 ```bash
 pytest
+```
+
+Or using Makefile:
+
+```bash
+make test
+```
+
+## Code Quality Tools
+
+This project integrates various code quality tools:
+
+- **Flake8**: Code style checking
+- **Black**: Code formatting
+- **isort**: Import statement sorting
+- **mypy**: Static type checking
+- **pylint**: Code quality analysis
+
+### Usage
+
+Check code:
+
+```bash
+make lint
+```
+
+Format code:
+
+```bash
+make format
+```
+
+### Pre-commit Hooks
+
+This project uses pre-commit to manage Git pre-commit hooks, ensuring code quality before commits:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+## Cleanup
+
+Delete temporary files and caches:
+
+```bash
+make clean
 ```
