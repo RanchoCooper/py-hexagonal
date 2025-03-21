@@ -285,3 +285,17 @@ poetry.toml
 
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,python
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Docker
+.dockerignore
+docker-compose.override.yml
