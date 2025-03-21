@@ -1,0 +1,32 @@
+flask:
+  DEBUG: true
+  TESTING: false
+  SECRET_KEY: test-secret-key
+  JSON_AS_ASCII: false
+
+db:
+  # 默认数据库连接，可选 'mysql' 或 'postgresql'
+  default: mysql
+  
+  # 为不同领域服务指定数据库
+  examples_db: mysql
+  
+  # MySQL配置
+  mysql:
+    url: mysql+pymysql://root:mysqlroot@localhost:3306/py_hexagonal
+    echo: false
+  
+  # PostgreSQL配置
+  postgresql:
+    url: postgresql+psycopg2://postgres:postgres@localhost:5432/postgres
+    echo: false
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  prefix: app:py_hexagonal:
+
+logging:
+  level: INFO
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s' 
