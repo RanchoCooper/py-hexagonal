@@ -68,10 +68,16 @@ jobs:
     
     - name: Run tests with pytest
       run: |
-        pytest --cov=. --cov-report=xml
+        pytest --cov --cov-branch --cov-report=xml
       env:
         PYTHONPATH: .
         
     - name: Restore cmd directory name
       run: |
         mv project_cmd cmd
+        
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: RanchoCooper/py-hexagonal

@@ -1,7 +1,7 @@
 # Python Hexagonal Architecture
 
-![CI Status](https://github.com/yourusername/py-hexagonal/actions/workflows/ci.yml/badge.svg)
-[![codecov](https://codecov.io/gh/yourusername/py-hexagonal/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/py-hexagonal)
+![CI Status](https://github.com/RanchoCooper/py-hexagonal/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/RanchoCooper/py-hexagonal/branch/main/graph/badge.svg)](https://codecov.io/gh/RanchoCooper/py-hexagonal)
 
 一个基于六边形架构（端口与适配器架构）的 Python 应用程序示例。该项目展示了如何将业务逻辑与技术实现细节分离，以创建可维护、可测试和灵活的应用程序。
 
