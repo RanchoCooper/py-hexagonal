@@ -62,7 +62,7 @@ def main():
     # Set container instance for global access
     _set_container_instance(container)
     
-    # 触发数据库注册
+    # Trigger database registration
     db_registry_configurator = container.db_registry_configurator()
     
     # Initialize database

@@ -23,8 +23,8 @@ from adapter.repository.sqlalchemy import (
     create_postgresql_engine,
     create_scoped_session,
     create_session_factory,
+    init_db_schema,
 )
-from adapter.repository.sqlalchemy import initialize_database as init_db_schema
 from adapter.repository.sqlalchemy.example_repository import SQLAlchemyExampleRepository
 from adapter.repository.sqlalchemy.models import Base
 from application.event.example_event_handlers import (
@@ -50,7 +50,7 @@ def register_resources_with_deps(api):
     Args:
         api: Flask-RESTful API instance
     """
-    # 获取全局container实例
+    # Get global container instance
     container = _get_container_instance()
     
     if container is not None:
@@ -61,7 +61,7 @@ def register_resources_with_deps(api):
         register_resources(api)
 
 
-# 全局变量，用于存储container实例的引用
+# Global variable for storing the container instance reference
 _container_instance = None
 
 
@@ -76,14 +76,14 @@ def _set_container_instance(container):
 
 def register_databases(mysql_engine, postgresql_engine, mysql_session, postgresql_session, default_db):
     """
-    注册数据库到全局注册表
+    Register databases to the global registry
     
     Args:
-        mysql_engine: MySQL引擎实例
-        postgresql_engine: PostgreSQL引擎实例
-        mysql_session: MySQL会话实例
-        postgresql_session: PostgreSQL会话实例
-        default_db: 默认数据库名称
+        mysql_engine: MySQL engine instance
+        postgresql_engine: PostgreSQL engine instance
+        mysql_session: MySQL session instance
+        postgresql_session: PostgreSQL session instance
+        default_db: Default database name
     """
     db_registry.register('mysql', mysql_engine, mysql_session)
     db_registry.register('postgresql', postgresql_engine, postgresql_session)
@@ -249,24 +249,20 @@ def initialize_event_handlers(container):
 
 def initialize_database(container):
     """
-    Initialize the database by creating tables.
+    Initialize and setup database connections.
     
     Args:
         container: The dependency injection container
     """
-    try:
-        # 确保数据库注册已完成
-        container.db_registry_configurator()
-        
-        # 初始化MySQL数据库
-        mysql_engine = container.mysql_engine()
-        init_db_schema(mysql_engine)
-        logger.info("MySQL database tables created")
-        
-        # 初始化PostgreSQL数据库
-        postgresql_engine = container.postgresql_engine()
-        init_db_schema(postgresql_engine)
-        logger.info("PostgreSQL database tables created")
-    except Exception as e:
-        logger.error(f"Error initializing database: {str(e)}")
-        raise 
+    # Ensure database registry is configured
+    db_registry_configurator = container.db_registry_configurator()
+    
+    # Initialize MySQL database
+    mysql_engine = container.mysql_engine()
+    init_db_schema(mysql_engine)
+    
+    # Initialize PostgreSQL database
+    postgresql_engine = container.postgresql_engine()
+    init_db_schema(postgresql_engine)
+    
+    logger.info("Database initialized") 

@@ -30,7 +30,7 @@ class TestExampleResource(unittest.TestCase):
         # Create API and register resources
         api = Api(self.app)
 
-        # 正确地注入依赖
+        # Properly inject dependencies
         api.add_resource(
             ExampleListResource,
             "/api/examples",

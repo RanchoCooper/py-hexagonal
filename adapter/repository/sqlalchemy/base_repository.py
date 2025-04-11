@@ -1,49 +1,50 @@
 """
-Base repository implementation for SQLAlchemy.
+SQLAlchemy base repository implementation.
 
-This module provides a base class for SQLAlchemy-based repositories
-that can dynamically choose which database to use.
+This module provides base repository implementations using SQLAlchemy.
 """
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+import logging
 
 from adapter.repository import db_registry
+from domain.repository import Repository
+
+logger = logging.getLogger(__name__)
 
 
-class BaseSQLAlchemyRepository:
+class SQLAlchemyRepository(Repository):
     """
-    基础SQLAlchemy仓储实现
+    Base SQLAlchemy repository implementation
     
-    提供基本的数据库操作和动态选择数据库的能力
+    Provides basic database operations and the ability to dynamically select databases
     """
     
     def __init__(self, db_name=None):
         """
-        初始化仓储
+        Initialize repository
         
         Args:
-            db_name: 要使用的数据库名称，为None则使用默认数据库
+            db_name: Database name to use, uses default if None
         """
-        self._db_name = db_name
+        self.db_name = db_name
     
     @property
-    def _session(self) -> Session:
+    def session(self):
         """
-        获取当前会话
+        Get current session
         
         Returns:
-            SQLAlchemy Session实例
+            SQLAlchemy Session instance
         """
-        return db_registry.get_session(self._db_name)
+        return db_registry.get_session(self.db_name)
     
-    def _commit(self):
-        """提交事务"""
+    def commit(self):
+        """Commit transaction"""
         try:
-            self._session.commit()
-        except SQLAlchemyError as e:
-            self._session.rollback()
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
             raise e
     
-    def _rollback(self):
-        """回滚事务"""
-        self._session.rollback() 
+    def rollback(self):
+        """Rollback transaction"""
+        self.session.rollback() 

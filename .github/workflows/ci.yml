@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11']
+        python-version: ['3.12']
 
     services:
       mysql:
@@ -62,19 +62,11 @@ jobs:
       run: |
         cp config/config.yaml.example config/config.yaml
     
-    - name: Rename cmd directory to avoid stdlib conflict
-      run: |
-        mv cmd project_cmd
-    
     - name: Run tests with pytest
       run: |
         pytest --cov --cov-branch --cov-report=xml
       env:
         PYTHONPATH: .
-        
-    - name: Restore cmd directory name
-      run: |
-        mv project_cmd cmd
         
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5

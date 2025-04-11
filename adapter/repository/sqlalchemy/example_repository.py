@@ -7,13 +7,13 @@ from typing import List, Optional
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from adapter.repository.sqlalchemy.base_repository import BaseSQLAlchemyRepository
+from adapter.repository.sqlalchemy.base_repository import SQLAlchemyRepository
 from adapter.repository.sqlalchemy.models import ExampleModel
 from domain.model.example import Example
 from domain.repository.example_repository import ExampleRepository
 
 
-class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
+class SQLAlchemyExampleRepository(SQLAlchemyRepository, ExampleRepository):
     """
     SQLAlchemy-based implementation of the Example repository.
     
@@ -23,10 +23,10 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
     
     def __init__(self, db_name=None):
         """
-        Initialize the repository.
+        Initialize the Example repository
         
         Args:
-            db_name: 要使用的数据库名称，为None则使用默认数据库
+            db_name: Database name to use, uses default if None
         """
         super().__init__(db_name)
     
@@ -42,7 +42,7 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
         """
         try:
             # Check if the example already exists
-            existing_model = self._session.query(ExampleModel).filter_by(id=example.id).first()
+            existing_model = self.session.query(ExampleModel).filter_by(id=example.id).first()
             
             if existing_model:
                 # Update the existing model
@@ -58,12 +58,12 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
                     created_at=example.created_at,
                     updated_at=example.updated_at
                 )
-                self._session.add(model)
+                self.session.add(model)
             
-            self._commit()
+            self.commit()
             return example
         except SQLAlchemyError as e:
-            self._rollback()
+            self.rollback()
             raise e
     
     def find_by_id(self, example_id: str) -> Optional[Example]:
@@ -76,7 +76,7 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
         Returns:
             The found example entity or None if not found
         """
-        model = self._session.query(ExampleModel).filter_by(id=example_id).first()
+        model = self.session.query(ExampleModel).filter_by(id=example_id).first()
         return self._to_entity(model) if model else None
     
     def find_by_name(self, name: str) -> Optional[Example]:
@@ -89,7 +89,7 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
         Returns:
             The found example entity or None if not found
         """
-        model = self._session.query(ExampleModel).filter_by(name=name).first()
+        model = self.session.query(ExampleModel).filter_by(name=name).first()
         return self._to_entity(model) if model else None
     
     def find_all(self) -> List[Example]:
@@ -99,7 +99,7 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
         Returns:
             A list of all example entities
         """
-        models = self._session.query(ExampleModel).all()
+        models = self.session.query(ExampleModel).all()
         return [self._to_entity(model) for model in models]
     
     def delete(self, example_id: str) -> bool:
@@ -113,15 +113,15 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
             True if the example was deleted, False otherwise
         """
         try:
-            model = self._session.query(ExampleModel).filter_by(id=example_id).first()
+            model = self.session.query(ExampleModel).filter_by(id=example_id).first()
             if not model:
                 return False
             
-            self._session.delete(model)
-            self._commit()
+            self.session.delete(model)
+            self.commit()
             return True
         except SQLAlchemyError as e:
-            self._rollback()
+            self.rollback()
             raise e
     
     def exists_by_name(self, name: str) -> bool:
@@ -134,7 +134,7 @@ class SQLAlchemyExampleRepository(BaseSQLAlchemyRepository, ExampleRepository):
         Returns:
             True if an example with the given name exists, False otherwise
         """
-        return self._session.query(ExampleModel).filter_by(name=name).first() is not None
+        return self.session.query(ExampleModel).filter_by(name=name).first() is not None
     
     def _to_entity(self, model: ExampleModel) -> Example:
         """

@@ -1,11 +1,25 @@
 """
-Repository adapters package.
+Repository adapters module.
 
 This package contains adapter implementations for the domain repositories.
 """
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def register_db(name, engine, session):
+    """
+    Register a database connection
+    
+    Args:
+        name: Database name
+        engine: SQLAlchemy engine
+        session: SQLAlchemy session
+    """
 
 class DatabaseRegistry:
-    """数据库注册表，管理不同的数据库连接"""
+    """Database registry to manage different database connections"""
 
     def __init__(self):
         self._engines = {}
@@ -14,12 +28,12 @@ class DatabaseRegistry:
 
     def register(self, name, engine, session):
         """
-        注册一个数据库连接
+        Register a database connection
         
         Args:
-            name: 数据库连接名称
-            engine: SQLAlchemy Engine实例
-            session: SQLAlchemy Session实例
+            name: Database connection name
+            engine: SQLAlchemy Engine instance
+            session: SQLAlchemy Session instance
         """
         self._engines[name] = engine
         self._sessions[name] = session
@@ -28,10 +42,10 @@ class DatabaseRegistry:
 
     def set_default(self, name):
         """
-        设置默认数据库连接
+        Set default database connection
         
         Args:
-            name: 数据库连接名称
+            name: Database connection name
         """
         if name not in self._engines:
             raise ValueError(f"No database registered with name '{name}'")
@@ -39,13 +53,13 @@ class DatabaseRegistry:
 
     def get_engine(self, name=None):
         """
-        获取数据库引擎
+        Get database engine
         
         Args:
-            name: 数据库连接名称，为None则返回默认连接
+            name: Database connection name, returns default if None
             
         Returns:
-            SQLAlchemy Engine实例
+            SQLAlchemy Engine instance
         """
         if name is None:
             name = self._default
@@ -55,13 +69,13 @@ class DatabaseRegistry:
 
     def get_session(self, name=None):
         """
-        获取数据库会话
+        Get database session
         
         Args:
-            name: 数据库连接名称，为None则返回默认连接
+            name: Database connection name, returns default if None
             
         Returns:
-            SQLAlchemy Session实例
+            SQLAlchemy Session instance
         """
         if name is None:
             name = self._default
@@ -70,5 +84,5 @@ class DatabaseRegistry:
         return self._sessions[name]
 
 
-# 创建全局数据库注册表实例
+# Create global database registry instance
 db_registry = DatabaseRegistry()

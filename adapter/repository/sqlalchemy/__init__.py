@@ -1,70 +1,74 @@
-"""SQLAlchemy repository adapters for data persistence."""
+"""
+SQLAlchemy repository adapters.
+"""
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from adapter.repository.sqlalchemy.models import Base
 
 
 def create_mysql_engine(url, echo=False):
     """
-    创建MySQL数据库引擎
+    Create MySQL database engine
     
     Args:
-        url: MySQL数据库连接URL
-        echo: 是否输出SQL语句（调试用）
-        
-    Returns:
-        SQLAlchemy Engine实例
+        url: MySQL database connection URL
+        echo: Whether to output SQL statements (for debugging)
     """
-    return create_engine(url, echo=echo)
+    return create_engine(
+        url,
+        echo=echo,
+        pool_recycle=3600,
+        pool_pre_ping=True,
+    )
 
 
 def create_postgresql_engine(url, echo=False):
     """
-    创建PostgreSQL数据库引擎
+    Create PostgreSQL database engine
     
     Args:
-        url: PostgreSQL数据库连接URL
-        echo: 是否输出SQL语句（调试用）
+        url: PostgreSQL database connection URL
+        echo: Whether to output SQL statements (for debugging)
         
     Returns:
-        SQLAlchemy Engine实例
+        SQLAlchemy Engine instance
     """
     return create_engine(url, echo=echo)
 
 
 def create_session_factory(engine):
     """
-    创建数据库会话工厂
+    Create database session factory
     
     Args:
-        engine: SQLAlchemy引擎实例
+        engine: SQLAlchemy engine instance
         
     Returns:
-        SQLAlchemy会话工厂
+        SQLAlchemy session factory
     """
     return sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def create_scoped_session(session_factory):
     """
-    创建线程安全的数据库会话
+    Create thread-safe database session
     
     Args:
-        session_factory: SQLAlchemy会话工厂
+        session_factory: SQLAlchemy session factory
         
     Returns:
-        线程安全的SQLAlchemy会话
+        Thread-safe SQLAlchemy session
     """
     return scoped_session(session_factory)
 
 
-def initialize_database(engine):
+def init_db_schema(engine):
     """
-    初始化数据库架构
+    Initialize database schema
     
     Args:
-        engine: SQLAlchemy引擎实例
+        engine: SQLAlchemy engine instance
     """
-    Base.metadata.create_all(engine) 
+    Base.metadata.create_all(bind=engine) 
