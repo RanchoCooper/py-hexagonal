@@ -9,7 +9,8 @@ from abc import ABC, abstractmethod
 class Repository(ABC):
     """
     Base repository interface for domain repositories.
-    
+
     All repositories should inherit from this class.
     """
+
     pass

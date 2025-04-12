@@ -14,13 +14,14 @@ from domain.event.event import DomainEvent
 class ExampleCreatedEvent(DomainEvent):
     """
     Event raised when a new Example is created.
-    
+
     This event contains all the information about the newly created Example.
     """
+
     example_id: str
     name: str
     description: Optional[str] = None
-    
+
     def __post_init__(self):
         """Initialize the event type after instance creation."""
         self.event_type = "example.created"
@@ -31,13 +32,14 @@ class ExampleCreatedEvent(DomainEvent):
 class ExampleUpdatedEvent(DomainEvent):
     """
     Event raised when an Example is updated.
-    
+
     This event contains the ID of the updated Example and the updated fields.
     """
+
     example_id: str
     name: str
     description: Optional[str] = None
-    
+
     def __post_init__(self):
         """Initialize the event type after instance creation."""
         self.event_type = "example.updated"
@@ -48,12 +50,13 @@ class ExampleUpdatedEvent(DomainEvent):
 class ExampleDeletedEvent(DomainEvent):
     """
     Event raised when an Example is deleted.
-    
+
     This event contains the ID of the deleted Example.
     """
+
     example_id: str
-    
+
     def __post_init__(self):
         """Initialize the event type after instance creation."""
         self.event_type = "example.deleted"
-        super().__post_init__() 
+        super().__post_init__()

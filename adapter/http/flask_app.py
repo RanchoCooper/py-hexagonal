@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def register_resources(api, example_app_service=None):
     """
     Register API resources with the Flask-RESTful API.
-    
+
     Args:
         api: Flask-RESTful API instance
         example_app_service: Example application service instance
@@ -23,11 +23,11 @@ def register_resources(api, example_app_service=None):
     # Example resources
     api.add_resource(
         ExampleListResource,
-        '/api/examples',
-        resource_class_kwargs={'example_app_service': example_app_service}
+        "/api/examples",
+        resource_class_kwargs={"example_app_service": example_app_service},
     )
     api.add_resource(
-        ExampleResource, 
-        '/api/examples/<string:example_id>',
-        resource_class_kwargs={'example_app_service': example_app_service}
-    ) 
+        ExampleResource,
+        "/api/examples/<string:example_id>",
+        resource_class_kwargs={"example_app_service": example_app_service},
+    )
